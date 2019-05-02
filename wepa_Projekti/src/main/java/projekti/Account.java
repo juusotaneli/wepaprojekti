@@ -5,10 +5,13 @@
  */
 package projekti;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
@@ -35,5 +38,11 @@ public class Account extends AbstractPersistable<Long> {
     private String username;
     private String password;
     private String useraddress;
+    private ArrayList <String> friends;
     
+    @OneToMany(mappedBy="receiver")
+    private List <FriendRequest> receivedfriendrequests = new ArrayList<>();
+    
+    @OneToMany(mappedBy="sender")
+    private List <FriendRequest> sentfriendrequests = new ArrayList<>();
 }

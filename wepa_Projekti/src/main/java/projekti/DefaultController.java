@@ -1,9 +1,13 @@
 package projekti;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,37 +18,48 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class DefaultController {
 
     @Autowired
-    private AccountRepository accountRepository;
+    AccountRepository accountRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    AccountService as;
+
 
     @GetMapping("*")
-    public String handleDefault() {
-        return "redirect:/login";
+    public String handleDefault(Model model) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        if (accountRepository.findByUsername(username) != null) {
+            model.addAttribute("account", accountRepository.findByUsername(username));
+            return "homepage";
+        }
+
+        return "login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/")
     public String paska(@RequestParam String username, @RequestParam String password, Model model) {
-        Account a = accountRepository.findByUsername(username);
-        if (a != null && passwordEncoder.matches(password, a.getPassword())) {
-            model.addAttribute("accounts", accountRepository.findAll());
+        if (accountRepository.findByUsername(username) != null && passwordEncoder.matches(password, accountRepository.findByUsername(username).getPassword())) {
+            model.addAttribute("accounts", accountRepository.findByUsername(username));
             return "redirect:/" + accountRepository.findByUsername(username).getUseraddress();
-
         }
         return "login";
 
     }
 
     @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
+    public String login(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        if (accountRepository.findByUsername(username) != null) {
+            model.addAttribute("account", accountRepository.findByUsername(username));
+            return "redirect:/" + accountRepository.findByUsername(username).getUseraddress();
+        }
 
-    @GetMapping("/{useraddress}")
-    public String home(Model model, @PathVariable String useraddress) {
-        model.addAttribute("account", accountRepository.findByUseraddress(useraddress));
-        return "homepage";
+        return "login";
     }
 
     @GetMapping("/register")
@@ -62,7 +77,7 @@ public class DefaultController {
     @GetMapping("/d")
     public String delete() {
         accountRepository.deleteAll();
-        return "login";
+        return "redirect:/login";
     }
 
     @PostMapping("/search")
@@ -75,10 +90,10 @@ public class DefaultController {
 
         }
     }
+
     @GetMapping("/search")
     public String userSearch(Model model, @RequestParam String usersearch) {
         model.addAttribute("accounts", accountRepository.findAll());
         return "usersearch";
     }
-   
 }

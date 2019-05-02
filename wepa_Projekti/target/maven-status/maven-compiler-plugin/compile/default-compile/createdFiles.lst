@@ -1,6 +1,7 @@
-projekti/User.class
-projekti/MyApplication.class
 projekti/DevelopmentSecurityConfiguration.class
 projekti/DefaultController.class
-projekti/UserController.class
-projekti/UserRepository.class
+projekti/CustomUserDetailsService.class
+projekti/MyApplication.class
+projekti/AccountRepository.class
+projekti/Account.class
+projekti/AccountController.class

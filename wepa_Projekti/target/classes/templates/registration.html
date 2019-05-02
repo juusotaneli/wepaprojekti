@@ -10,12 +10,11 @@ and open the template in the editor.
         <meta charset="UTF-8" />
         <title>Hello world</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-        <link href="static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     </head>
     <body>
 
-        <form class="form-signup" th:action="@{/createNewAccount}" method="post">
+        <form class="form-signup" th:action="@{/register}" method="post">
             <div class = "container">
                 <h2 class="form-signup-heading">Sign up</h2>
                 <p th:if="${param.error}" class="error">Invalid user, password, or domain</p>
