@@ -5,8 +5,12 @@
  */
 package projekti;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -24,25 +29,105 @@ public class FunctionsController {
 
     @Autowired
     AccountRepository ar;
-    
+
     @Autowired
     FriendRequestRepository frr;
     
+    @Autowired
+    PostRepository pr;
+    
+    @Transactional
     @GetMapping("/friendrequest/{id}")
-    public String friendRequest(@PathVariable Long id) {
+    public String friendRequest(@PathVariable Long id, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        Account a = ar.getOne(id);
+        Account loggedinAccount = ar.findByUsername(username);
         
+        Account a = ar.getOne(id);
         FriendRequest fr = new FriendRequest();
         fr.setReceiver(a);
-        fr.setSender(ar.findByUsername(username));
+        fr.setSender(loggedinAccount);
         frr.save(fr);
 
-        ar.findByUsername(username).getSentfriendrequests().add(fr);
-        
-        return "redirect:/" + fr.getReceiver().getUseraddress();
+        loggedinAccount.getSentfriendrequests().add(fr);
+        a.getReceivedfriendrequests().add(fr);
+
+        model.addAttribute(loggedinAccount);
+
+        return "redirect:/" + a.getUsername();
     }
 
-   
+    @GetMapping("/accept/{id}")
+    public String acceptFriendRequest(@PathVariable Long id, Model model) {
+
+        Account senderAcco = ar.getOne(id);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        Account receiverAcco = ar.findByUsername(username);
+        
+        ar.findByUsername(username).getFriends().add(senderAcco.getName());
+        ar.getOne(id).getFriends().add(receiverAcco.getName());
+
+        for (int i = 0; i < receiverAcco.getReceivedfriendrequests().size(); i++) {
+            if (receiverAcco.getReceivedfriendrequests().get(i).getSender().getId().equals(senderAcco.getId())) {
+                receiverAcco.getReceivedfriendrequests().remove(i);
+            }
+        }
+        for (int i = 0; i < frr.findAll().size(); i++) {
+            if (frr.findAll().get(i).getReceiver().equals(receiverAcco) && frr.findAll().get(i).getSender().equals(senderAcco)) {
+                frr.deleteById(frr.findAll().get(i).getId());
+            }
+
+        }
+        
+        
+        model.addAttribute("account", senderAcco);
+        return "redirect:/notifications";
+    }
+
+    @GetMapping("/decline/{id}")
+    public String declineFriendRequest(@PathVariable Long id) {
+        Account senderAcco = ar.getOne(id);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        Account receiverAcco = ar.findByUsername(username);
+        
+        for (int i = 0; i < receiverAcco.getReceivedfriendrequests().size(); i++) {
+            if (receiverAcco.getReceivedfriendrequests().get(i).getSender().getId().equals(senderAcco.getId())) {
+                receiverAcco.getReceivedfriendrequests().remove(i);
+            }
+        }
+        for (int i = 0; i < frr.findAll().size(); i++) {
+            if (frr.findAll().get(i).getReceiver().equals(receiverAcco) && frr.findAll().get(i).getSender().equals(senderAcco)) {
+                frr.deleteById(frr.findAll().get(i).getId());
+            }
+        }
+        return "redirect:/notifications";
+    }
+    @Transactional
+    @PostMapping("/post/{id}")
+    public String postToTheWall (@PathVariable Long id, @RequestParam String content){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        LocalDateTime date = LocalDateTime.now();
+        
+        Account poster = ar.findByUsername(username);
+        
+        Account receiver = ar.getOne(id);
+        
+        Post post = new Post (receiver, poster.getName(), content, date);
+        
+        pr.save(post);
+        
+        receiver.getPosts().add(post);
+        
+        
+        return "redirect:/" + receiver.getUseraddress();
+  
+    }
+
 }

@@ -15,26 +15,79 @@ and open the template in the editor.
 
     <header>
         <nav class="navbar navbar-light bg-light">
-            <a href="/">HOMEPAGE</a>
+            <a class = "col-2" href="/">HOMEPAGE</a>
             <form class="form-inline" th:action="@{/search}" method="post">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" id="usersearch" name="usersearch">
+                <a class="btn btn-outline-success" th:href="@{/notifications}">
+                    Notifications <span class="badge badge-danger" th:text="${#lists.size(requests)}"></span>
+                </a>
+                <input class="form-control" type="search" placeholder="Search" id="usersearch" name="usersearch">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    <a class="btn btn-outline-success my-2 my-sm-0" href="/logout"/>Logout</a>
+                    <a class="btn btn-danger my-2 my-sm-0" href="/logout"/>Logout</a>
             </form>
-        </nav>  
+
+        </nav>
     </header>
     <body>
-        <div class ="container">    
-            <p th:text="${account.name}">username</p>
+        <div class ="container-fluid">    
+            <div class ="row">
+                <div class ="col-sm"
+                     <p th:text="${account.name}">username</p>
+                </div>
+
+
+            </div>
+        </div>
+        <div class ="container-fluid">    
+            <div class ="row">
+                <div class ="col-md cell">
+                    <h2>Friends</h2>
+                    <tr th:each="friend: ${friendslist}">
+                        <div th:text="${friend}" />
+                    </tr>
+                </div>
+                <div class ="col-sm cell">
+                    <td th:each="post : ${account.posts}">
+                        <div>
+                            <span th:text="${post.ldt}"/>  <<span th:text="${post.poster}" />> <span th:text="${post.content}" />
+                        </div>
+                    </td>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <div class ="container-fluid">
+            <div class ="row">
+
+
+            </div>
+        </div>
+        <div class ="container-fluid">
+
+            <div class ="row">
+                <div class ="col-md">
+
+                </div>
+
+                <div class ="col-md">
+                    <form th:action="@{post/{id}(id=${account.id})}" method="POST">
+                        <textarea class="form-control" id="post" name="content" rows="3"></textarea>
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Post</button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="container-fluid">
             <td>
-                <a th:if="${areFriends == true and friendRequestAlreadySent == false}" th:href="@{friendrequest/{id}(id=${account.id})}" class="btn btn-outline-success my-2 my-sm-0">Send friend request</a>
+                <a th:if="${samePerson == false and friendRequestAlreadySent == false and areFriends == false}" th:href="@{friendrequest/{id}(id=${account.id})}" class="btn btn-outline-success my-2 my-sm-0">Send friend request</a>
             </td>
-            <p th:text="${friendRequestAlreadySent}">username</p>
-            tää
-            <tr th:each="request: ${requests}">
-            <td th:text="${request.sender.name}" />
-            </tr>
-            
+            <p class="btn btn-outline-success my-2 my-sm-0" th:if="${friendRequestAlreadySent == true}">Friend request sent / received (pending)</p>
+            <p class="btn btn-outline-success my-2 my-sm-0" th:if="${areFriends == true}">You are friends!</p>
         </div>
     </body>
 </html>

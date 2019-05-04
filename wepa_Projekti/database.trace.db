@@ -1675,3 +1675,34 @@ select account0_.id as id1_0_, account0_.friends as friends2_0_, account0_.name 
 2019-05-02 23:08:57 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLException: Table "ACCOUNT" not found; SQL statement:
 select account0_.id as id1_0_, account0_.friends as friends2_0_, account0_.name as name3_0_, account0_.password as password4_0_, account0_.useraddress as useraddr5_0_, account0_.username as username6_0_ from account account0_ where account0_.username=? [42102-197]
+2019-05-04 12:59:26 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "ACCOUNT" not found; SQL statement:
+select account0_.id as id1_0_, account0_.friends as friends2_0_, account0_.name as name3_0_, account0_.password as password4_0_, account0_.useraddress as useraddr5_0_, account0_.username as username6_0_ from account account0_ where account0_.username=? [42102-197]
+2019-05-04 12:59:26 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "ACCOUNT" not found; SQL statement:
+select account0_.id as id1_0_, account0_.friends as friends2_0_, account0_.name as name3_0_, account0_.password as password4_0_, account0_.useraddress as useraddr5_0_, account0_.username as username6_0_ from account account0_ where account0_.username=? [42102-197]
+2019-05-04 12:59:29 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "ACCOUNT" not found; SQL statement:
+select account0_.id as id1_0_, account0_.friends as friends2_0_, account0_.name as name3_0_, account0_.password as password4_0_, account0_.useraddress as useraddr5_0_, account0_.username as username6_0_ from account account0_ where account0_.username=? [42102-197]
+2019-05-04 13:03:31 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "ACCOUNT" not found; SQL statement:
+select account0_.id as id1_0_, account0_.friends as friends2_0_, account0_.name as name3_0_, account0_.password as password4_0_, account0_.useraddress as useraddr5_0_, account0_.username as username6_0_ from account account0_ where account0_.username=? [42102-197]
+2019-05-04 13:03:33 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "ACCOUNT" not found; SQL statement:
+select account0_.id as id1_0_, account0_.friends as friends2_0_, account0_.name as name3_0_, account0_.password as password4_0_, account0_.useraddress as useraddr5_0_, account0_.username as username6_0_ from account account0_ where account0_.username=? [42102-197]
+2019-05-04 13:03:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "ACCOUNT" not found; SQL statement:
+select account0_.id as id1_0_, account0_.friends as friends2_0_, account0_.name as name3_0_, account0_.password as password4_0_, account0_.useraddress as useraddr5_0_, account0_.username as username6_0_ from account account0_ where account0_.username=? [42102-197]
+2019-05-04 15:05:35 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "FRIENDS[*]"; expected "FROM, {"; SQL statement:
+FRIENDS [42001-197]
+2019-05-04 15:05:57 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLException: Table "FRIENDS" not found; SQL statement:
+SELECT * FROM 
+FRIENDS [42102-197]
+2019-05-04 15:06:06 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * FROM ACCOUNT FRIENDS NAME[*]"; SQL statement:
+SELECT * FROM ACCOUNT FRIENDS NAME [42000-197]
+2019-05-04 15:06:06 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * FROM ACCOUNT FRIENDS NAME[*]"; SQL statement:
+SELECT * FROM ACCOUNT FRIENDS NAME [42000-197]

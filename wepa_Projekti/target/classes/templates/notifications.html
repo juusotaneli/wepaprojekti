@@ -28,8 +28,17 @@ and open the template in the editor.
         </nav>
     </header>
     <body>
-        <div th:each="account : ${accounts}">
-        <p th:text="${account.name}">Onions</p>
+        <div class ="container-fluid">    
+            <h1>Friend Requests</h1>
+            <div class ="row"> 
+                <div class ="col-sm">
+                    <tr th:each="request: ${requests}">
+                        <div th:text="${request.sender.name}" />
+                        <a class="btn btn-success my-2 my-sm-0" th:href="@{/accept/{id}(id=${request.sender.id})}" name="${request.sender.id}">Accept new friend!</a>
+                        <a class="btn btn-danger my-2 my-sm-0" th:href="@{/decline/{id}(id=${request.sender.id})}" name="${request.sender.id}">I don't want to be their friend :(</a>
+                    </tr>
+                </div>
+            </div>
         </div>
     </body>
 </html>

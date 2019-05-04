@@ -19,6 +19,8 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     
     Account findByUseraddress(String useraddress);
     
+    Account findByName(String useraddress);
+    
     @EntityGraph(value = "Acco")
     List<Account> findByIdNotNull();
 }

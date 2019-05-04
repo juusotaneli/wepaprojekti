@@ -41,28 +41,52 @@ public class AccountController {
     @PostMapping("/register")
     public String registration(@RequestParam String name, @RequestParam String username, @RequestParam String password, @RequestParam String useraddress) {
         if (accountRepository.findByUsername(username) == null) {
-            accountRepository.save(new Account(name, username, passwordEncoder.encode(password), useraddress, new ArrayList (), new ArrayList (), new ArrayList ())) ;
+            accountRepository.save(new Account(name, username, passwordEncoder.encode(password), useraddress, new ArrayList (), new ArrayList (), new ArrayList (), new ArrayList ())) ;
         }
         return "redirect:/login";
     }
+    
     @GetMapping("/{useraddress}")
     public String home(Model model, @PathVariable String useraddress) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Account loggedInUser = accountRepository.findByUseraddress(username);
         Account searchedUser = accountRepository.findByUseraddress(useraddress);
-        if (searchedUser != null && !loggedInUser.equals(searchedUser)) {
+        if (useraddress.equals(loggedInUser.getUseraddress())) {
+            model.addAttribute("friendslist", loggedInUser.getFriends());
             model.addAttribute("account", searchedUser);
+            model.addAttribute("samePerson", as.samePerson(username, useraddress));
             model.addAttribute("areFriends", as.areFriends(username, useraddress));
             model.addAttribute("friendRequestAlreadySent", as.friendRequestAlreadySent(username, useraddress));
             model.addAttribute("requests", searchedUser.getReceivedfriendrequests());
             return "homepage";
+        }
+        else if (searchedUser != null && !loggedInUser.equals(searchedUser)) {
+            model.addAttribute("friendslist", searchedUser.getFriends());
+            model.addAttribute("account", searchedUser);
+            model.addAttribute("samePerson", as.samePerson(username, useraddress));
+            model.addAttribute("areFriends", as.areFriends(username, useraddress));
+            model.addAttribute("friendRequestAlreadySent", as.friendRequestAlreadySent(username, useraddress));
+            model.addAttribute("requests", loggedInUser.getReceivedfriendrequests());
+            return "homepage";
+            
         } else if (searchedUser != null && loggedInUser.equals(searchedUser)) {
             model.addAttribute("account", loggedInUser);
+            model.addAttribute("requests", loggedInUser.getReceivedfriendrequests());
             return "homepage";
         } else {
             return "index";
         }
+    }
+    @GetMapping("/notifications")
+    public String getFriendRequests (Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Account a = accountRepository.findByUsername(username);
+        model.addAttribute("requests", a.getReceivedfriendrequests());
+        model.addAttribute("account", a);
+        model.addAttribute("friends", a.getFriends());
+        return "notifications";
     }
     
 }
