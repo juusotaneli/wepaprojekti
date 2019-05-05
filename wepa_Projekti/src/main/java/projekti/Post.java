@@ -29,4 +29,6 @@ public class Post extends AbstractPersistable<Long> {
     private String content;
     private LocalDateTime ldt;
     
+    
+    
 }

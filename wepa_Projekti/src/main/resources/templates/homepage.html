@@ -8,7 +8,7 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
-        <title>Hello world</title>
+        <title>Homepage</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     </head>
@@ -30,64 +30,48 @@ and open the template in the editor.
     <body>
         <div class ="container-fluid">    
             <div class ="row">
-                <div class ="col-sm"
-                     <p th:text="${account.name}">username</p>
+                <div class ="col-sm">
+                    <h1 th:text="${account.name}"></h1>
                 </div>
-
 
             </div>
         </div>
-        <div class ="container-fluid">    
+        <div class="container-fluid">
             <div class ="row">
-                <div class ="col-md cell">
+                <div class ="col-sm">
+                    <a th:href="@{album/{id}(id=${account.id})}" ><img th:if="${hasPicture == true}" th:src="@{/picture/{id}(id=${picture.id})}" height="300"/></a>
+                    <br>
+                    <br>
+                    <a class="btn btn-outline-success" th:if="${hasPicture == false and samePerson == true}"  href="/upload">Upload Profile picture </a>
+                    <a class="btn btn-outline-success" th:if="${hasPicture == true and samePerson == true}"  href="/upload">Upload pictures</a>
                     <h2>Friends</h2>
-                    <tr th:each="friend: ${friendslist}">
+                    <tr th:each="friend :${account.friends}">
                         <div th:text="${friend}" />
                     </tr>
+                    <td>
+                        <a th:if="${samePerson == false and friendRequestAlreadySent == false and areFriends == false}" th:href="@{friendrequest/{id}(id=${account.id})}" class="btn btn-outline-success my-2 my-sm-0">Send friend request</a>
+                    </td>
+                    <p class="btn btn-outline-success my-2 my-sm-0" th:if="${friendRequestAlreadySent == true}">Friend request sent / received (pending)</p>
+                    <p class="btn btn-outline-success my-2 my-sm-0" th:if="${areFriends == true}">You are friends!</p>
                 </div>
-                <div class ="col-sm cell">
-                    <td th:each="post : ${account.posts}">
+                <div th:if="${areFriends == true or samePerson == true}" class ="col">
+                    <td th:each="post : ${posts}">
                         <div>
-                            <span th:text="${post.ldt}"/>  <<span th:text="${post.poster}" />> <span th:text="${post.content}" />
+                            <span th:text="${#temporals.format(post.ldt, 'dd-MM-yyyy HH:mm')}"/>  <<span th:text="${post.poster}" />> <span th:text="${post.content}" />
                         </div>
                     </td>
-                </div>
 
-
-            </div>
-        </div>
-
-
-        <div class ="container-fluid">
-            <div class ="row">
-
-
-            </div>
-        </div>
-        <div class ="container-fluid">
-
-            <div class ="row">
-                <div class ="col-md">
-
-                </div>
-
-                <div class ="col-md">
-                    <form th:action="@{post/{id}(id=${account.id})}" method="POST">
+                    <form th:if="${areFriends == true or samePerson == true}" th:action="@{post/{id}(id=${account.id})}" method="POST">
                         <textarea class="form-control" id="post" name="content" rows="3"></textarea>
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Post</button>
                     </form>
+
                 </div>
+
 
             </div>
 
         </div>
 
-        <div class="container-fluid">
-            <td>
-                <a th:if="${samePerson == false and friendRequestAlreadySent == false and areFriends == false}" th:href="@{friendrequest/{id}(id=${account.id})}" class="btn btn-outline-success my-2 my-sm-0">Send friend request</a>
-            </td>
-            <p class="btn btn-outline-success my-2 my-sm-0" th:if="${friendRequestAlreadySent == true}">Friend request sent / received (pending)</p>
-            <p class="btn btn-outline-success my-2 my-sm-0" th:if="${areFriends == true}">You are friends!</p>
-        </div>
     </body>
 </html>

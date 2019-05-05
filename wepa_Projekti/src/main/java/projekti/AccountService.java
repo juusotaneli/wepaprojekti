@@ -19,6 +19,9 @@ public class AccountService {
 
     @Autowired
     AccountRepository ar;
+    
+    @Autowired
+    PictureRepository prr;
 
     public boolean samePerson(String username, String useraddress) {
         //tsekkaa onko tarkasteltava profiili oma vai toisen käyttäjän
@@ -55,6 +58,11 @@ public class AccountService {
 
         return false;
 
+    }
+    public boolean hasPicture(String useraddress) {
+        Account a = ar.findByUseraddress(useraddress);
+
+        return !a.getPictures().isEmpty();
     }
 
 }

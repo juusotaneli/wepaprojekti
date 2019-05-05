@@ -11,7 +11,7 @@ public class MyApplication {
     
     @PostConstruct
     public void started() {
-        TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Helsinki"));
     }
 
     public static void main(String[] args) {
