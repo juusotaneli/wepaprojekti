@@ -51,4 +51,5 @@ public class Account extends AbstractPersistable<Long> {
     
     @OneToMany(mappedBy="account")
     private List <Picture> pictures = new ArrayList<>();
+    
 }

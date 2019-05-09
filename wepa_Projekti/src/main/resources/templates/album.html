@@ -4,22 +4,55 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
+        <meta charset="UTF-8" />
         <title>Album</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     </head>
-    <body>
-        <div class="container">
-            <tr th:each="picture :${pictures}">
-            <div class="row">
-                <div class="img">
-                    <img th:src="@{/picture/{id}(id=${picture.id})}" width=50% height=50%/>
-                </div>
-            </div>
-        </tr>
-    </div>
+    <header>
+        <nav class="navbar navbar-light bg-light">
+            <a class = "col-2" href="/">HOMEPAGE</a>
+            <form class="form-inline" th:action="@{/search}" method="post">
+                <a class="btn btn-outline-success" th:href="@{/notifications}">
+                    Notifications <span class="badge badge-danger" th:text="${#lists.size(account.receivedfriendrequests)}"></span>
+                </a>
+                <input class="form-control" type="search" placeholder="Search by name" id="usersearch" name="usersearch">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    <a class="btn btn-danger my-2 my-sm-0" href="/logout"/>Logout</a>
+            </form>
 
-</body>
+        </nav>
+    </header>
+
+    <body>
+
+        <div th:each="picture :${pictures}">
+            <a th:if = "${samePerson == true}" class = "badge badge-pill badge-success" th:href="@{/setprofilepicture/{id}(id=${picture.id})}">make profile picture</a>
+            <a th:if = "${samePerson == true}" class = "badge badge-pill badge-danger" th:href="@{/deletepicture/{id}(id=${picture.id})}">delete picture</a>
+            <div class="row">
+                <div class="col">
+                    <img th:src="@{/picture/{id}(id=${picture.id})}" height=500/> 
+                </div>
+                
+                <div class="col">
+                    <td th:each="comment :${picture.comments}">
+                        <div>
+                            <span th:text="${#temporals.format(comment.ldt, 'dd-MM-yyyy HH:mm')}"/> <<span th:text="${comment.account.name}"/>> <span th:text="${comment.text}" /> </br>
+                        </div>
+                </div>
+                <div class="col">
+                    <form th:if="${areFriends == true or samePerson == true}" th:action="@{/picture/{useraddress}/{id}(id=${picture.id}, useraddress=${searchedaccount.useraddress})}" method="POST">
+                        <textarea class="form-control" id="post" name="comment" rows="3"></textarea>
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Comment</button>
+                    </form>
+                    
+                </div>
+                
+            </div>
+            
+        </div>
+        </tr>
+    </body>
 </html>

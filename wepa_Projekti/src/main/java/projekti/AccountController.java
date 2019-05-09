@@ -52,7 +52,7 @@ public class AccountController {
 
     @PostMapping("/register")
     public String registration(@RequestParam String name, @RequestParam String username, @RequestParam String password, @RequestParam String useraddress) {
-        if (accountRepository.findByUsername(username) == null) {
+        if (accountRepository.findByUsername(username) == null && accountRepository.findByUsername(useraddress) == null) {
             accountRepository.save(new Account(name, username, passwordEncoder.encode(password), useraddress, new ArrayList(), new ArrayList(), new ArrayList(), new ArrayList(), new ArrayList()));
         }
         return "redirect:/login";
@@ -64,7 +64,7 @@ public class AccountController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
-        Account loggedInUser = accountRepository.findByUseraddress(username);
+        Account loggedInUser = accountRepository.findByUsername(username);
         Account searchedUser = accountRepository.findByUseraddress(useraddress);
         Pageable pageable;
 
@@ -74,6 +74,7 @@ public class AccountController {
         
         Collections.reverse(posts);
         
+        
         Object picture;
         
         if (searchedUser.getPictures().isEmpty()) {
@@ -82,7 +83,7 @@ public class AccountController {
             picture = prr.findByAccount(searchedUser).get(0);
         }
 
-        if (searchedUser != null && useraddress.equals(loggedInUser.getUseraddress())) {
+        if (searchedUser != null && loggedInUser != null && useraddress.equals(loggedInUser.getUseraddress())) {
             model.addAttribute("account", searchedUser);
             model.addAttribute("posts", posts);
             model.addAttribute("samePerson", as.samePerson(username, useraddress));

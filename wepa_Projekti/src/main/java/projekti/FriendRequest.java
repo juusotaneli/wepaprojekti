@@ -7,6 +7,8 @@ package projekti;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +23,9 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
  */
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor
+
+@NamedEntityGraph(name = "FriendRequest",
+  attributeNodes = {@NamedAttributeNode("sender"), @NamedAttributeNode("receiver")})
 
 public class FriendRequest extends AbstractPersistable<Long> {
         

@@ -91,10 +91,10 @@ public class DefaultController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Account a = accountRepository.findByUsername(username);
-        if (accountRepository.findByUsername(usersearch) != null) {
-            return "redirect:/" + accountRepository.findByUsername(usersearch).getUseraddress();
+        if (accountRepository.findByName(usersearch) != null) {
+            return "redirect:/" + accountRepository.findByName(usersearch).getUseraddress();
         } else {
-            model.addAttribute("accounts", accountRepository.findAll());
+            model.addAttribute("accounts", accountRepository.findByIdNotNull());
             model.addAttribute("requests", a.getReceivedfriendrequests());
 
             return "usersearch";
@@ -106,7 +106,7 @@ public class DefaultController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Account a = accountRepository.findByUsername(username);
-        model.addAttribute("accounts", accountRepository.findAll());
+        model.addAttribute("accounts", accountRepository.findByIdNotNull());
         model.addAttribute("requests", a.getReceivedfriendrequests());
         return "usersearch";
     }

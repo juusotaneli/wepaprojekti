@@ -8,12 +8,11 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
-        <title>Hello world</title>
+        <title>Registration</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     </head>
     <body>
-
         <form class="form-signup" th:action="@{/register}" method="post">
             <div class = "container">
                 <h2 class="form-signup-heading">Sign up</h2>
@@ -34,7 +33,9 @@ and open the template in the editor.
                     <input id="useraddress" name="useraddress" class="form-control"
                            placeholder="Personal address"/>
                 </p>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button><br/>
+                
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+                <a href="/login" class="btn btn-lg btn-primary btn-block" >Return</a>
             </div>
         </form>
     </body>

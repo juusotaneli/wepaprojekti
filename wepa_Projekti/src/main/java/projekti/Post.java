@@ -13,6 +13,11 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -20,6 +25,8 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor
+@NamedEntityGraph(name = "Post",
+  attributeNodes = {@NamedAttributeNode("account"), @NamedAttributeNode("poster"), @NamedAttributeNode("content"), @NamedAttributeNode("ldt"), @NamedAttributeNode("likes")})
 public class Post extends AbstractPersistable<Long> {
     
     @ManyToOne
@@ -29,6 +36,7 @@ public class Post extends AbstractPersistable<Long> {
     private String content;
     private LocalDateTime ldt;
     
-    
+    @OneToMany (mappedBy = "post")
+    private List <LikeObject> likes = new ArrayList<>();
     
 }

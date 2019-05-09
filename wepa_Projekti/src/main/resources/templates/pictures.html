@@ -4,18 +4,33 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Upload a picture</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8" />
+        <title>Album</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     </head>
+    <header>
+        <nav class="navbar navbar-light bg-light">
+            <a class = "col-2" href="/">HOMEPAGE</a>
+            <form class="form-inline" th:action="@{/search}" method="post">
+                <a class="btn btn-outline-success" th:href="@{/notifications}">
+                    Notifications <span class="badge badge-danger" th:text="${#lists.size(account.receivedfriendrequests)}"></span>
+                </a>
+                <input class="form-control" type="search" placeholder="Search by name" id="usersearch" name="usersearch">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <a class="btn btn-danger my-2 my-sm-0" href="/logout"/>Logout</a>
+            </form>
+
+        </nav>
+    </header>
     <body>
-        <div class="container">
+        
         <form th:action="@{/upload}" method="POST" enctype="multipart/form-data">
             <input type="file" name="file" />
             <input type="submit" value="Send!"/>
         </form>
-        </div>
+        
     </body>
 </html>

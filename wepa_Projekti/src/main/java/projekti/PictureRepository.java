@@ -15,8 +15,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface PictureRepository extends JpaRepository<Picture, Long> {
     
-    List findByAccount(Account account);
-    
+    List <Picture> findByAccount(Account account);
+   
+ 
 }
     
     
