@@ -1,6 +1,6 @@
 Springillä tehty "vanhan ajan Facebook".
 
-Projekti on keskeneräinen ja loppuviilaus + koodin refaktorointi on härskisti jätetty tekemättä. 
+Projekti keskeneräinen ja loppuviilaus & koodin refaktorointi on härskisti jätetty tekemättä. 
 
 _Lähdekoodispagetin katselu omalla vastuulla_
 
