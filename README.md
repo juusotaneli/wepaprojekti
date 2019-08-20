@@ -1,4 +1,4 @@
-Springillä tehty "vanhan ajan Facebook".
+Javalla ja Spring Bootilla tehty "vanhan ajan Facebook".
 
 Projekti keskeneräinen ja loppuviilaus & koodin refaktorointi on härskisti jätetty tekemättä. 
 
