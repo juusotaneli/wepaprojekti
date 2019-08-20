@@ -1,4 +1,4 @@
-##Wanhan ajan Facebook
+Wanhan ajan Facebook
 
 Helsingin yliopiston kurssin "Web-palvelinohjelmointi Javalla" -harjoitustyö.
 
